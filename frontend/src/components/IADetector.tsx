@@ -13,7 +13,7 @@ export default function IADetector() {
   const videoRef = useRef<HTMLVideoElement>(null);
   // estado para almacenar la predicción actual
   const [model, setModel] = useState<tmImage.CustomMobileNet | null>(null);
-  const [prediction, setPrediction] = useState<Prediction[] | null>(null);
+  const [prediction, setPrediction] = useState<Prediction[]>([]);
   // Cargar el modelo al montar el componente
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
@@ -100,7 +100,7 @@ export default function IADetector() {
           // Formatea las predicciones para mostrar solo las 3 más probables con porcentaje
           const formatted: Prediction[] = rawPredictions.map((pred) => ({
             className: pred.className,
-            probability: Math.round(pred.probability * 10000) / 100, // Formatea a porcentaje con 2 decimales
+            probability: Math.round(pred.probability * 100) / 100, // Formatea a porcentaje con 2 decimales
           }));
           setPrediction(formatted); // Muestra todas las predicciones
           // Continúa el loop de predicción
@@ -138,8 +138,8 @@ export default function IADetector() {
   }, [model, error]);
   //
   const dominantPrediction =
-    prediction!.length > 0
-      ? prediction!.reduce((max, pred) =>
+    prediction.length > 0
+      ? prediction.reduce((max, pred) =>
           pred.probability > max.probability ? pred : max,
         )
       : { className: "Fondo_Control", probability: 0 }; // Predicción por defecto si no hay resultados
@@ -220,7 +220,7 @@ export default function IADetector() {
         <h4 className="text-sm font-semibold text-gray-700 dark:text-gray-300">
           Todas las predicciones:
         </h4>
-        {prediction!.map((pred) => {
+        {prediction.map((pred) => {
           const predConfig = getCategoryConfig(pred.className);
           const isDominant = pred.className === dominantPrediction.className;
           
