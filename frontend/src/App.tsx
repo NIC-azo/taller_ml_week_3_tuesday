@@ -1,121 +1,76 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import heroImg from './assets/hero.png'
-import './App.css'
+import IADetector from "./components/IADetector"
+import {useThemeStore} from "@/store/theme.store"
+
 
 function App() {
-  const [count, setCount] = useState(0)
-
+  const {theme, toggleTheme} = useThemeStore();
   return (
-    <>
-      <section id="center">
-        <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors duration-200">
+      
+      {/* ───────── HEADER: Título + Toggle de Tema ───────── */}
+      <header className="bg-white dark:bg-gray-800 shadow-sm border-b border-gray-200 dark:border-gray-700 sticky top-0 z-10">
+        <div className="max-w-4xl mx-auto px-4 py-4 flex justify-between items-center">
+          <div>
+            <h1 className="text-xl md:text-2xl font-bold text-gray-900 dark:text-white">
+              ♻️ EcoClasifica Ica
+            </h1>
+            <p className="text-xs md:text-sm text-gray-500 dark:text-gray-400 mt-1">
+              Clasificador inteligente de residuos con IA local
+            </p>
+          </div>
+          
+          <button
+            onClick={toggleTheme}
+            className="p-2.5 rounded-xl bg-gray-100 dark:bg-gray-700 
+                      text-gray-700 dark:text-gray-200
+                      hover:bg-gray-200 dark:hover:bg-gray-600 
+                      transition-all duration-200 shadow-sm"
+            aria-label={`Cambiar a tema ${theme === 'light' ? 'oscuro' : 'claro'}`}
+            title="Cambiar tema"
+          >
+            {theme === 'light' ? (
+              <i className="fas fa-moon text-lg" aria-hidden="true" />
+            ) : (
+              <i className="fas fa-sun text-lg" aria-hidden="true" />
+            )}
+          </button>
         </div>
-        <div>
-          <h1>Get started</h1>
-          <p>
-            Edit <code>src/App.tsx</code> and save to test <code>HMR</code>
+      </header>
+
+      {/* ───────── CONTENIDO PRINCIPAL ───────── */}
+      <main className="max-w-4xl mx-auto px-4 py-6 md:py-10">
+        
+        {/* Tarjeta de presentación del proyecto */}
+        <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-5 md:p-7 mb-6 border border-gray-100 dark:border-gray-700">
+          <h2 className="text-lg md:text-xl font-semibold text-gray-900 dark:text-white mb-3">
+            🎯 Clasificación en Tiempo Real
+          </h2>
+          <p className="text-gray-600 dark:text-gray-300 text-sm md:text-base leading-relaxed">
+            Apunta tu cámara a un residuo y la inteligencia artificial lo clasificará 
+            instantáneamente. Funciona 100% en tu dispositivo: 
+            <span className="font-medium text-blue-600 dark:text-blue-400"> sin internet, sin privacidad comprometida</span>.
           </p>
         </div>
-        <button
-          type="button"
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
-        >
-          Count is {count}
-        </button>
-      </section>
 
-      <div className="ticks"></div>
-
-      <section id="next-steps">
-        <div id="docs">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#documentation-icon"></use>
-          </svg>
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
-          <ul>
-            <li>
-              <a href="https://vite.dev/" target="_blank">
-                <img className="logo" src={viteLogo} alt="" />
-                Explore Vite
-              </a>
-            </li>
-            <li>
-              <a href="https://react.dev/" target="_blank">
-                <img className="button-icon" src={reactLogo} alt="" />
-                Learn more
-              </a>
-            </li>
-          </ul>
+        {/* Componente de detección IA */}
+        <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-5 md:p-7 border border-gray-100 dark:border-gray-700">
+          <IADetector />
         </div>
-        <div id="social">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#social-icon"></use>
-          </svg>
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-          <ul>
-            <li>
-              <a href="https://github.com/vitejs/vite" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#github-icon"></use>
-                </svg>
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://chat.vite.dev/" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#discord-icon"></use>
-                </svg>
-                Discord
-              </a>
-            </li>
-            <li>
-              <a href="https://x.com/vite_js" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#x-icon"></use>
-                </svg>
-                X.com
-              </a>
-            </li>
-            <li>
-              <a href="https://bsky.app/profile/vite.dev" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#bluesky-icon"></use>
-                </svg>
-                Bluesky
-              </a>
-            </li>
-          </ul>
-        </div>
-      </section>
 
-      <div className="ticks"></div>
-      <section id="spacer"></section>
-    </>
+        {/* ───────── FOOTER: Información Técnica ───────── */}
+        <footer className="mt-10 text-center text-xs text-gray-400 dark:text-gray-500 space-y-2">
+          <p>
+            Desarrollado con <span className="text-red-500">♥</span> para Ica • 
+            TensorFlow.js + Teachable Machine
+          </p>
+          <p className="text-[10px] opacity-75">
+            Inferencia local offline • Modelo MobileNet con transfer learning • 
+            Código abierto para fines educativos
+          </p>
+        </footer>
+
+      </main>
+    </div>
   )
 }
 
